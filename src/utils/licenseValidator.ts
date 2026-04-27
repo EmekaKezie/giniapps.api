@@ -1,8 +1,8 @@
 // utils/licenseValidator.ts
 import crypto from "node:crypto";
-import { formatKey } from "./keys";
+import { licenseKeyFormat } from "./licenseKeyFormat";
 
-const PUBLIC_KEY = formatKey(process.env.LICENSE_PUBLIC_KEY!);
+const PUBLIC_KEY = licenseKeyFormat(process.env.LICENSE_PUBLIC_KEY!);
 
 export const licenseValidator = (license: string): boolean => {
   try {
@@ -30,6 +30,8 @@ export const getLicenseData = (license: string) => {
     const decoded = JSON.parse(
       Buffer.from(license, "base64").toString("utf-8"),
     );
+
+    console.log(decoded)
 
     return JSON.parse(decoded.payload);
   } catch {

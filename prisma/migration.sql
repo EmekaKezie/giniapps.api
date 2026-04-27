@@ -36,6 +36,23 @@ CREATE TABLE "ginivo_company" (
     CONSTRAINT "ginivo_company_pkey" PRIMARY KEY ("company_id")
 );
 
+-- CreateTable
+CREATE TABLE "gini_app" (
+    "app_id" VARCHAR(36) NOT NULL,
+    "app_name" VARCHAR(100) NOT NULL,
+    "app_code" VARCHAR(20) NOT NULL,
+    "api_key" VARCHAR(50),
+    "is_active" INTEGER NOT NULL,
+    "is_live" INTEGER NOT NULL,
+    "created_date" TIMESTAMPTZ(6),
+    "create_by" VARCHAR(36),
+    "license_private_key" TEXT,
+    "license_public_key" TEXT,
+    "generated_license" TEXT,
+
+    CONSTRAINT "gini_app_pkey" PRIMARY KEY ("app_id")
+);
+
 -- CreateIndex
 CREATE INDEX "idx_account_on_company_id" ON "ginivo_account"("company_id");
 
