@@ -1,0 +1,9 @@
+=============
+Run this to generate DDL sql from schema.prisma
+=============
+npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script --output prisma\migration.sql
+
+=============
+Run this to make prisma recognize your db objects
+=============
+npx prisma generate

@@ -1,0 +1,55 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"] // <--- MUST HAVE THIS
+  binaryTargets   = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model ginivo_account {
+  account_id                        String     @id @db.VarChar(36)
+  company_id                        String     @db.VarChar(36)
+  user_id                           String     @db.VarChar(36)
+  firstname                         String?    @db.VarChar(50)
+  lastname                          String?    @db.VarChar(50)
+  email                             String     @db.VarChar(250)
+  phone                             String?    @db.VarChar(20)
+  account_status                    String     @db.VarChar(20)
+  created_date                      DateTime   @db.Timestamp(6) @default(now())
+  creator_user_id                   String     @db.VarChar(36)
+  modified_date                     DateTime   @db.Timestamp(6)
+  modifier_user_id                  String     @db.VarChar(36)
+  last_accessed_company_id          String     @db.VarChar(36)
+
+  company     ginivo_company?  @relation(fields: [company_id], references: [company_id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([company_id], map: "idx_account_on_company_id")
+  @@index([user_id], map: "idx_account_on_user_id")
+}
+
+
+
+model ginivo_company {
+  company_id                        String     @id @db.VarChar(36)
+  name                              String     @db.VarChar(100)
+  email                             String?    @db.VarChar(250)
+  phone                             String?    @db.VarChar(20)
+  address                           String?    @db.Text    
+  country                           String?    @db.VarChar(100)
+  website                           String?    @db.VarChar(100)
+  tax_no                            String?    @db.VarChar(20)
+  created_date                      DateTime   @db.Timestamp(6) @default(now())
+  creator_user_id                   String     @db.VarChar(36)
+  modified_date                     DateTime   @db.Timestamp(6)
+  modifier_user_id                  String     @db.VarChar(36)
+  country_code                      String?    @db.VarChar(10)
+
+  accounts          ginivo_account[]
+
+}
+
+
