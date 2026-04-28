@@ -31,7 +31,7 @@ export const getLicenseData = (license: string) => {
       Buffer.from(license, "base64").toString("utf-8"),
     );
 
-    console.log(decoded)
+    // console.log(decoded)
 
     return JSON.parse(decoded.payload);
   } catch {

@@ -53,7 +53,7 @@ model ginivo_company {
 }
 
 
-model gini_app {
+model giniapp {
   app_id                            String   @id @db.VarChar(36)
   app_name                          String   @db.VarChar(100)
   app_code                          String   @db.VarChar(20)
