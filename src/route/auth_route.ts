@@ -28,8 +28,8 @@ router.post(
         return;
       }
 
-      const user_accounts = await GetAccountByUserId(user_id);
-      if (!user_accounts) {
+      const account = await GetAccountByUserId(user_id);
+      if (!account) {
         response = {
           status: "failed",
           message: "Invalid credentials",
@@ -38,8 +38,6 @@ router.post(
         res.status(400).json(response);
         return;
       }
-
-      const account = user_accounts?.find((x) => !!x.last_accessed_company_id);
 
       if (!account) {
         response = {
@@ -54,7 +52,6 @@ router.post(
       const generate_token = EncodeAuthToken(
         user_id,
         account.account_id,
-        account.company_id,
         account.email,
         account.firstname || "",
         account.lastname || "",

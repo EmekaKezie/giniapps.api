@@ -2,7 +2,6 @@ import { ICompanyContext } from "./company_context";
 
 export interface IAccountContext {
   account_id: string;
-  company_id: string; // The "Home/Primary" company ID
   user_id: string;
   firstname?: string | null;
   lastname?: string | null;
@@ -13,8 +12,8 @@ export interface IAccountContext {
   creator_user_id: string;
   modified_date: Date;
   modifier_user_id: string;
-  last_accessed_company_id: string;
+  is_deactivated: number;
+  deactivation_reason?: string | null;
 
   // RELATION: Array of company memberships
-  company?: ICompanyContext | null;
 }

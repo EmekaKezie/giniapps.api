@@ -2,34 +2,43 @@ import { Request, Response, Router } from "express";
 import { IApiRes } from "../model/aapbase_model";
 import { IAppContext } from "../context/app_context";
 import { GetAppByCode, GetAppById, GetApps } from "../repo/app_repo";
+import { JwtConfig } from "../utils/jwt";
 
 const router = Router();
 
-router.get("/", async (req, res: Response<IApiRes<IAppContext[]>>) => {
-  let response: IApiRes<IAppContext[]>;
-  try {
-    const apps = await GetApps();
-    response = {
-      status: "success",
-      message: "Success",
-      data: apps,
-    };
-    res.status(200).json(response);
-    return;
-  } catch (error) {
-    const errMsg = error instanceof Error ? error?.message : "Unknown error";
-    response = {
-      status: "error",
-      message: errMsg,
-      data: null,
-    };
-    res.status(500).json(response);
-    return;
-  }
-});
+//#region Get all apps
+router.get(
+  "/",
+  JwtConfig,
+  async (req, res: Response<IApiRes<IAppContext[]>>) => {
+    let response: IApiRes<IAppContext[]>;
+    try {
+      const apps = await GetApps();
+      response = {
+        status: "success",
+        message: "Success",
+        data: apps,
+      };
+      res.status(200).json(response);
+      return;
+    } catch (error) {
+      const errMsg = error instanceof Error ? error?.message : "Unknown error";
+      response = {
+        status: "error",
+        message: errMsg,
+        data: null,
+      };
+      res.status(500).json(response);
+      return;
+    }
+  },
+);
+//#endregion
 
+//#region get app by id
 router.get(
   "/:app_id/get_id",
+  JwtConfig,
   async (
     req: Request<{ app_id: string }>,
     res: Response<IApiRes<IAppContext | null>>,
@@ -68,9 +77,12 @@ router.get(
     }
   },
 );
+//#endregion
 
+//#region Get app by code
 router.get(
   "/:app_code/get_code",
+  JwtConfig,
   async (
     req: Request<{ app_code: string }>,
     res: Response<IApiRes<IAppContext | null>>,
@@ -109,8 +121,6 @@ router.get(
     }
   },
 );
-
-
-
+//#endregion
 
 export default router;

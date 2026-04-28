@@ -13,12 +13,14 @@ import { IApiRes } from "../model/aapbase_model";
 import { GenerateAppLicense, GetAppByCode } from "../repo/app_repo";
 import { IAppContext } from "../context/app_context";
 import { v4 as UUID } from "uuid";
+import { JwtConfig } from "../utils/jwt";
 
 const router = Router();
 
 //#region Generate license
 router.post(
   "/generate",
+  JwtConfig,
   async (
     req: Request<{}, {}, IGenerateLicenseRequest, {}>,
     res: Response<IApiRes<IGenerateLicenseResponse>>,
@@ -85,6 +87,7 @@ router.post(
 //#region Verify license
 router.post(
   "/verify",
+  JwtConfig,
   (
     req: Request<{}, {}, IVerifyLicenseRequest, {}>,
     res: Response<IApiRes<IVerifyLicenseResponse>>,
@@ -121,7 +124,8 @@ router.post(
 //#region Inspect license
 router.post(
   "/inspect",
-  (
+  JwtConfig,
+  async (
     req: Request<{}, {}, IInspectLicenseRequest, {}>,
     res: Response<IApiRes<IInspectLicenseResponse | null>>,
   ) => {

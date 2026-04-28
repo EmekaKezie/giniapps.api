@@ -7,7 +7,6 @@ const secret = "123456";
 export const EncodeAuthToken = (
   user_id: string,
   account_id: string,
-  company_id: string,
   email: string,
   firstname: string,
   lastname: string,
@@ -15,7 +14,6 @@ export const EncodeAuthToken = (
   const payload: ITokenClaims = {
     user_id,
     account_id,
-    company_id,
     email,
     firstname,
     lastname,
@@ -66,7 +64,6 @@ export const JwtConfig = async (
       req.token = {
         user_id: payload.user_id,
         account_id: payload.account_id,
-        company_id: payload.company_id,
         email: payload.email,
         firstname: payload.firstname,
         lastname: payload.lastname,

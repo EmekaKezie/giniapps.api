@@ -9,7 +9,6 @@ declare global {
 export interface ITokenClaims {
   user_id: string;
   account_id: string;
-  company_id: string;
   email: string;
   firstname: string;
   lastname: string;

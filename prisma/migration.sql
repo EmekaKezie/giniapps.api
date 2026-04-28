@@ -1,23 +1,4 @@
 -- CreateTable
-CREATE TABLE "ginivo_account" (
-    "account_id" VARCHAR(36) NOT NULL,
-    "company_id" VARCHAR(36) NOT NULL,
-    "user_id" VARCHAR(36) NOT NULL,
-    "firstname" VARCHAR(50),
-    "lastname" VARCHAR(50),
-    "email" VARCHAR(250) NOT NULL,
-    "phone" VARCHAR(20),
-    "account_status" VARCHAR(20) NOT NULL,
-    "created_date" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "creator_user_id" VARCHAR(36) NOT NULL,
-    "modified_date" TIMESTAMP(6) NOT NULL,
-    "modifier_user_id" VARCHAR(36) NOT NULL,
-    "last_accessed_company_id" VARCHAR(36) NOT NULL,
-
-    CONSTRAINT "ginivo_account_pkey" PRIMARY KEY ("account_id")
-);
-
--- CreateTable
 CREATE TABLE "ginivo_company" (
     "company_id" VARCHAR(36) NOT NULL,
     "name" VARCHAR(100) NOT NULL,
@@ -37,7 +18,7 @@ CREATE TABLE "ginivo_company" (
 );
 
 -- CreateTable
-CREATE TABLE "gini_app" (
+CREATE TABLE "giniapp" (
     "app_id" VARCHAR(36) NOT NULL,
     "app_name" VARCHAR(100) NOT NULL,
     "app_code" VARCHAR(20) NOT NULL,
@@ -50,14 +31,27 @@ CREATE TABLE "gini_app" (
     "license_public_key" TEXT,
     "generated_license" TEXT,
 
-    CONSTRAINT "gini_app_pkey" PRIMARY KEY ("app_id")
+    CONSTRAINT "giniapp_pkey" PRIMARY KEY ("app_id")
+);
+
+-- CreateTable
+CREATE TABLE "giniapp_account" (
+    "account_id" VARCHAR(36) NOT NULL,
+    "user_id" VARCHAR(36) NOT NULL,
+    "firstname" VARCHAR(50),
+    "lastname" VARCHAR(50),
+    "email" VARCHAR(250) NOT NULL,
+    "phone" VARCHAR(20),
+    "account_status" VARCHAR(20) NOT NULL,
+    "created_date" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "creator_user_id" VARCHAR(36) NOT NULL,
+    "modified_date" TIMESTAMP(6) NOT NULL,
+    "modifier_user_id" VARCHAR(36) NOT NULL,
+    "is_deactivated" INTEGER NOT NULL DEFAULT 0,
+    "deactivation_reason" TEXT,
+
+    CONSTRAINT "giniapp_account_pkey" PRIMARY KEY ("account_id")
 );
 
 -- CreateIndex
-CREATE INDEX "idx_account_on_company_id" ON "ginivo_account"("company_id");
-
--- CreateIndex
-CREATE INDEX "idx_account_on_user_id" ON "ginivo_account"("user_id");
-
--- AddForeignKey
-ALTER TABLE "ginivo_account" ADD CONSTRAINT "ginivo_account_company_id_fkey" FOREIGN KEY ("company_id") REFERENCES "ginivo_company"("company_id") ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE INDEX "idx_giniapp_account_on_user_id" ON "giniapp_account"("user_id");

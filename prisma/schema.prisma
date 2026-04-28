@@ -10,28 +10,6 @@ datasource db {
 }
 
 
-model ginivo_account {
-  account_id                        String     @id @db.VarChar(36)
-  company_id                        String     @db.VarChar(36)
-  user_id                           String     @db.VarChar(36)
-  firstname                         String?    @db.VarChar(50)
-  lastname                          String?    @db.VarChar(50)
-  email                             String     @db.VarChar(250)
-  phone                             String?    @db.VarChar(20)
-  account_status                    String     @db.VarChar(20)
-  created_date                      DateTime   @db.Timestamp(6) @default(now())
-  creator_user_id                   String     @db.VarChar(36)
-  modified_date                     DateTime   @db.Timestamp(6)
-  modifier_user_id                  String     @db.VarChar(36)
-  last_accessed_company_id          String     @db.VarChar(36)
-
-  company     ginivo_company?  @relation(fields: [company_id], references: [company_id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@index([company_id], map: "idx_account_on_company_id")
-  @@index([user_id], map: "idx_account_on_user_id")
-}
-
-
 
 model ginivo_company {
   company_id                        String     @id @db.VarChar(36)
@@ -48,7 +26,6 @@ model ginivo_company {
   modifier_user_id                  String     @db.VarChar(36)
   country_code                      String?    @db.VarChar(10)
 
-  accounts          ginivo_account[]
 
 }
 
@@ -68,6 +45,26 @@ model giniapp {
   license_private_key               String?
   license_public_key                String?
   generated_license                 String?
+}
+
+
+
+model giniapp_account {
+  account_id                        String     @id @db.VarChar(36)
+  user_id                           String     @db.VarChar(36)
+  firstname                         String?    @db.VarChar(50)
+  lastname                          String?    @db.VarChar(50)
+  email                             String     @db.VarChar(250)
+  phone                             String?    @db.VarChar(20)
+  account_status                    String     @db.VarChar(20)
+  created_date                      DateTime   @db.Timestamp(6) @default(now())
+  creator_user_id                   String     @db.VarChar(36)
+  modified_date                     DateTime   @db.Timestamp(6)
+  modifier_user_id                  String     @db.VarChar(36)
+  is_deactivated                    Int        @default(0)
+  deactivation_reason               String?
+  
+  @@index([user_id], map: "idx_giniapp_account_on_user_id")
 }
 
 
