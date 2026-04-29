@@ -98,18 +98,6 @@ router.post(
       const { license } = req.body;
       const is_valid = licenseValidator(license);
 
-      if (!is_valid) {
-        response = {
-          status: "failed",
-          message: "License is invalid",
-          data: {
-            is_valid: is_valid,
-          },
-        };
-        res.status(400).json(response);
-        return;
-      }
-
       response = {
         status: "success",
         message: "Success",
