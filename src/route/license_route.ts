@@ -98,6 +98,18 @@ router.post(
       const { license } = req.body;
       const is_valid = licenseValidator(license);
 
+      if (!is_valid) {
+        response = {
+          status: "failed",
+          message: "License is invalid",
+          data: {
+            is_valid: is_valid,
+          },
+        };
+        res.status(400).json(response);
+        return;
+      }
+
       response = {
         status: "success",
         message: "Success",
@@ -105,7 +117,7 @@ router.post(
           is_valid: is_valid,
         },
       };
-      res.status(500).json(response);
+      res.status(200).json(response);
       return;
     } catch (error) {
       const errMsg = error instanceof Error ? error?.message : "Unknown error";
