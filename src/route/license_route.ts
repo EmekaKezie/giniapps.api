@@ -28,7 +28,7 @@ router.post(
     let response: IApiRes<IGenerateLicenseResponse>;
 
     try {
-      const { app_code, valid_days } = req.body;
+      const { app_code, valid_days, is_permanent } = req.body;
 
       if (!app_code) {
         response = {
@@ -50,7 +50,7 @@ router.post(
         return;
       }
 
-      const license = licenseGenerator(app_code, valid_days);
+      const license = licenseGenerator(app_code, valid_days, is_permanent);
 
       const created = await GenerateAppLicense(app.app_id, license);
       if (!created) {
@@ -148,7 +148,7 @@ router.post(
 
       const is_valid = licenseValidator(license);
       const data = getLicenseData(license);
-      
+
       if (!is_valid) {
         response = {
           status: "invalid_license",

@@ -42,9 +42,15 @@ export const licenseGenerator2 = (
 export const licenseGenerator = (
   app_code: string,
   valid_days: number,
+  is_permanent: boolean,
 ): string => {
   const expiry = new Date();
-  expiry.setDate(expiry.getDate() + valid_days);
+
+  if (is_permanent) {
+    expiry.setFullYear(9999);
+  } else {
+    expiry.setDate(expiry.getDate() + valid_days);
+  }
 
   const payload = {
     app_code,
