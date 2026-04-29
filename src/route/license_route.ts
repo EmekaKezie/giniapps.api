@@ -98,6 +98,19 @@ router.post(
       const { license } = req.body;
       const is_valid = licenseValidator(license);
 
+      if (!is_valid) {
+        response = {
+          status: "invalid_license",
+          message:
+            "Your application license is invalid or has reached its expiration date.",
+          data: {
+            is_valid: is_valid,
+          },
+        };
+        res.status(400).json(response);
+        return;
+      }
+
       response = {
         status: "success",
         message: "Success",
@@ -134,17 +147,22 @@ router.post(
       const { license } = req.body;
 
       const is_valid = licenseValidator(license);
+      const data = getLicenseData(license);
+      
       if (!is_valid) {
         response = {
-          status: "failed",
-          message: "Invalid License",
-          data: null,
+          status: "invalid_license",
+          message:
+            "Your application license is invalid or has reached its expiration date.",
+          data: {
+            app_code: data.app_code,
+            expiry: data.expiry,
+          },
         };
         res.status(400).json(response);
         return;
       }
 
-      const data = getLicenseData(license);
       response = {
         status: "success",
         message: "License is valid",

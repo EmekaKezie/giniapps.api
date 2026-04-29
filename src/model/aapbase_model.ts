@@ -22,7 +22,8 @@ export interface IApiRes<T> {
     | "invalid_token"
     | "permission_denied"
     | "failed_show_errors"
-    | "signup_account_exists";
+    | "signup_account_exists"
+    | "invalid_license";
   message: string;
   data: T | null;
   total?: number;
