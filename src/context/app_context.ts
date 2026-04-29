@@ -13,4 +13,6 @@ export interface IAppContext {
   license_private_key?: string | null;
   license_public_key?: string | null;
   generated_license?: string | null;
+
+  authorized_urls?: string | null
 }

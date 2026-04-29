@@ -30,6 +30,7 @@ CREATE TABLE "giniapp" (
     "license_private_key" TEXT,
     "license_public_key" TEXT,
     "generated_license" TEXT,
+    "authorized_urls" TEXT,
 
     CONSTRAINT "giniapp_pkey" PRIMARY KEY ("app_id")
 );

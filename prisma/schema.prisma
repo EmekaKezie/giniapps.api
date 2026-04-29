@@ -45,8 +45,9 @@ model giniapp {
   license_private_key               String?
   license_public_key                String?
   generated_license                 String?
-}
 
+  authorized_urls                   String?
+}
 
 
 model giniapp_account {
