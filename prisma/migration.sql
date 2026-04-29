@@ -25,12 +25,17 @@ CREATE TABLE "giniapp" (
     "api_key" VARCHAR(50),
     "is_active" INTEGER NOT NULL,
     "is_live" INTEGER NOT NULL,
-    "created_date" TIMESTAMPTZ(6),
-    "create_by" VARCHAR(36),
+    "created_date" TIMESTAMPTZ(6) NOT NULL,
+    "creator_user_id" VARCHAR(36) NOT NULL,
+    "modified_date" TIMESTAMP(6),
+    "modifier_user_id" VARCHAR(36),
     "license_private_key" TEXT,
     "license_public_key" TEXT,
     "generated_license" TEXT,
     "authorized_urls" TEXT,
+    "app_logo" TEXT,
+    "oauth_client_id" TEXT,
+    "oauth_client_secret" TEXT,
 
     CONSTRAINT "giniapp_pkey" PRIMARY KEY ("app_id")
 );

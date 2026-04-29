@@ -35,18 +35,22 @@ model giniapp {
   app_name                          String   @db.VarChar(100)
   app_code                          String   @db.VarChar(20)
   api_key                           String?  @db.VarChar(50)
-
   is_active                         Int
   is_live                           Int
 
-  created_date                      DateTime? @db.Timestamptz(6)
-  create_by                         String?   @db.VarChar(36)
+  created_date                      DateTime  @db.Timestamptz(6)
+  creator_user_id                   String    @db.VarChar(36)
+  modified_date                     DateTime? @db.Timestamp(6)
+  modifier_user_id                  String?   @db.VarChar(36)
 
   license_private_key               String?
   license_public_key                String?
   generated_license                 String?
 
   authorized_urls                   String?
+  app_logo                          String?
+  oauth_client_id                   String?
+  oauth_client_secret               String?
 }
 
 
