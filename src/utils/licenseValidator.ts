@@ -13,7 +13,6 @@ export const licenseValidator = (license: string): boolean => {
     const { payload, sig } = decoded;
     if (!payload || !sig) return false;
 
-    // 1. Verify cryptographic integrity (Is the signature valid?)
     const isAuthentic = crypto.verify(
       null,
       Buffer.from(payload),
@@ -23,13 +22,10 @@ export const licenseValidator = (license: string): boolean => {
 
     if (!isAuthentic) return false;
 
-    // 2. Verify Expiry (Has the date passed?)
     const { expiry } = JSON.parse(payload);
 
-    // Compare numeric timestamps to be 100% accurate
     if (new Date().getTime() > new Date(expiry).getTime()) {
-      console.log("License expired at:", expiry);
-      return false; // Signature was real, but time has run out
+      return false;
     }
 
     return true;
