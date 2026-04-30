@@ -2,8 +2,8 @@ export interface CreateAppRequest {
   app_name: string;
   app_code: string;
 
-  is_active: number;
-  is_live: number;
+  is_active: boolean;
+  is_live: boolean;
 
   // license_private_key?: string | null;
   // license_public_key?: string | null;

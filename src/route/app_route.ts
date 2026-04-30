@@ -141,8 +141,8 @@ router.post(
       const app_code = req.body?.app_code?.trim();
       const app_logo = req.body?.app_logo;
       const authorized_urls = req.body?.authorized_urls || [];
-      const is_active = !req.body?.is_active ? 0 : req.body?.is_active;
-      const is_live = !req.body?.is_live ? 0 : req.body?.is_live;
+      const is_active = !req.body?.is_active ? 0 : 1;
+      const is_live = !req.body?.is_live ? 0 : 1;
 
       if (!app_name) {
         response = {
