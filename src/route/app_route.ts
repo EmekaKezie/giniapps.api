@@ -241,6 +241,7 @@ router.get(
         offset?: string;
         limit?: string;
         recipient?: string;
+        status?: string;
         from?: string;
         to?: string;
       }
@@ -282,6 +283,7 @@ router.get(
         typeof v === "string" && v.trim() ? v.trim() : undefined;
       const outbox = await giniSendEmailOutbox(app.api_key, offset, limit, {
         recipient: str(req.query.recipient),
+        status: str(req.query.status),
         from: str(req.query.from),
         to: str(req.query.to),
       });

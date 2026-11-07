@@ -58,6 +58,8 @@ export const giniSendEmail = async (
 
 export interface IEmailOutboxFilter {
   recipient?: string;
+  /** pending | sent | delivered | failed */
+  status?: string;
   /** ISO date/datetime, inclusive, on created_date */
   from?: string;
   to?: string;
@@ -89,6 +91,7 @@ export const giniSendEmailOutbox = async (
       limit: String(limit),
     });
     if (filter.recipient) query.set("recipient", filter.recipient);
+    if (filter.status) query.set("status", filter.status);
     if (filter.from) query.set("from", filter.from);
     if (filter.to) query.set("to", filter.to);
     const url = `${baseUrl.replace(/\/$/, "")}/email/getall?${query}`;
