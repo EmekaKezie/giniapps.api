@@ -60,6 +60,7 @@ export interface IEmailOutboxFilter {
   recipient?: string;
   /** pending | sent | delivered | failed */
   status?: string;
+  smtp_id?: string;
   /** ISO date/datetime, inclusive, on created_date */
   from?: string;
   to?: string;
@@ -92,6 +93,7 @@ export const giniSendEmailOutbox = async (
     });
     if (filter.recipient) query.set("recipient", filter.recipient);
     if (filter.status) query.set("status", filter.status);
+    if (filter.smtp_id) query.set("smtp_id", filter.smtp_id);
     if (filter.from) query.set("from", filter.from);
     if (filter.to) query.set("to", filter.to);
     const url = `${baseUrl.replace(/\/$/, "")}/email/getall?${query}`;
