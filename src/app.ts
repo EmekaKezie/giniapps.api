@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import auth_route from "./route/auth_route";
 import app_route from "./route/app_route";
+import app_smtp_route from "./route/app_smtp_route";
 import license_routes from "./route/license_route";
 
 
@@ -29,6 +30,7 @@ app.get("/api/ping", (req, res) => {
 });
 
 app.use("/api/auth", auth_route);
+app.use("/api/app/:app_id/smtp", app_smtp_route);
 app.use("/api/app", app_route)
 app.use("/api/license", license_routes);
 
