@@ -56,10 +56,18 @@ export const giniSendEmail = async (
   }
 };
 
+export interface IEmailOutboxFilter {
+  recipient?: string;
+  /** ISO date/datetime, inclusive, on created_date */
+  from?: string;
+  to?: string;
+}
+
 export const giniSendEmailOutbox = async (
   apiKey: string,
   offset: number = 0,
   limit: number = 20,
+  filter: IEmailOutboxFilter = {},
 ): Promise<{
   status: "success" | "failed" | "error";
   message?: string;
@@ -80,6 +88,9 @@ export const giniSendEmailOutbox = async (
       offset: String(offset),
       limit: String(limit),
     });
+    if (filter.recipient) query.set("recipient", filter.recipient);
+    if (filter.from) query.set("from", filter.from);
+    if (filter.to) query.set("to", filter.to);
     const url = `${baseUrl.replace(/\/$/, "")}/email/getall?${query}`;
     const response = await fetch(url, {
       method: "GET",

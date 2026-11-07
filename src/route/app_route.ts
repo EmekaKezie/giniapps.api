@@ -233,7 +233,18 @@ router.get(
   "/:app_id/email_outbox",
   JwtConfig,
   async (
-    req: Request<{ app_id: string }, {}, {}, { offset?: string; limit?: string }>,
+    req: Request<
+      { app_id: string },
+      {},
+      {},
+      {
+        offset?: string;
+        limit?: string;
+        recipient?: string;
+        from?: string;
+        to?: string;
+      }
+    >,
     res: Response<IApiRes<any[]>>,
   ) => {
     let response: IApiRes<any[]>;
@@ -266,7 +277,14 @@ router.get(
         return;
       }
 
-      const outbox = await giniSendEmailOutbox(app.api_key, offset, limit);
+      // Filters are validated by GiniSend; only pass through plain strings.
+      const str = (v: unknown) =>
+        typeof v === "string" && v.trim() ? v.trim() : undefined;
+      const outbox = await giniSendEmailOutbox(app.api_key, offset, limit, {
+        recipient: str(req.query.recipient),
+        from: str(req.query.from),
+        to: str(req.query.to),
+      });
       if (!outbox || outbox.status !== "success") {
         response = {
           status: "failed",
