@@ -5,6 +5,7 @@ import { CreateApp, GetAppByCode, GetAppById, GetApps } from "../repo/app_repo";
 import { JwtConfig } from "../utils/jwt";
 import { CreateAppRequest } from "../model/app_model";
 import { v4 as UUID } from "uuid";
+import { giniSendEmailOutbox } from "../thirdparty/ginisend/ginisend_services";
 
 const router = Router();
 
@@ -210,6 +211,77 @@ router.post(
         status: "success",
         message: "App created successfully",
         data: "Success",
+      };
+      res.status(200).json(response);
+      return;
+    } catch (error) {
+      const errMsg = error instanceof Error ? error?.message : "Unknown error";
+      response = {
+        status: "error",
+        message: errMsg,
+        data: null,
+      };
+      res.status(500).json(response);
+      return;
+    }
+  },
+);
+//#endregion
+
+//#region Get app email outbox (paginated)
+router.get(
+  "/:app_id/email_outbox",
+  JwtConfig,
+  async (
+    req: Request<{ app_id: string }, {}, {}, { offset?: string; limit?: string }>,
+    res: Response<IApiRes<any[]>>,
+  ) => {
+    let response: IApiRes<any[]>;
+    try {
+      const { app_id } = req.params;
+      const offset = Math.max(0, parseInt(req.query.offset ?? "0", 10) || 0);
+      const limit = Math.min(
+        100,
+        Math.max(1, parseInt(req.query.limit ?? "20", 10) || 20),
+      );
+      const app = await GetAppById(app_id);
+
+      if (!app) {
+        response = {
+          status: "failed",
+          message: "App not found",
+          data: null,
+        };
+        res.status(401).json(response);
+        return;
+      }
+
+      if (!app?.api_key) {
+        response = {
+          status: "failed",
+          message: "App API key not found",
+          data: null,
+        };
+        res.status(400).json(response);
+        return;
+      }
+
+      const outbox = await giniSendEmailOutbox(app.api_key, offset, limit);
+      if (!outbox || outbox.status !== "success") {
+        response = {
+          status: "failed",
+          message: outbox?.message || "Failed to retrieve email outbox",
+          data: null,
+        };
+        res.status(400).json(response);
+        return;
+      }
+
+      response = {
+        status: "success",
+        message: "Success",
+        data: outbox.data ?? [],
+        total: outbox.total ?? 0,
       };
       res.status(200).json(response);
       return;
